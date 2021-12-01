@@ -11,27 +11,29 @@ import ShareIcon from '@mui/icons-material/Share';
 import { Rating } from '@material-ui/core';
 import { Skeleton } from '@mui/material';
 import api from '../utils/api'
+import { useParams } from 'react-router';
 
 
 
 export default function ProductCard(props) {
+let id = useParams();
 const [loading, isLoading] = useState(true);
 const [cardData , setCardData] = useState([])
 useEffect ( () => {
-  api.get(`${props.id}`)
+  api.get(`${id.id}`)
   .then((response) => {setCardData(response.data); isLoading(false);})
   .catch((err) => {
-    console.error("ops! ocorreu um erro" + err);
+    console.error("ops! ocorreu um erro: " + err);
  });
  
 }, []);
-console.log("card=",cardData);
-
-  return (
+console.log(cardData);
+if (cardData)
+ return (
     <Card sx={{ maxWidth: 345 }}>
       <CardHeader
         title={ loading ? <Skeleton variant="text"/> : cardData.title}
-        subheader={loading ? <Skeleton width={'40%'}/> : new Date().toString}
+        subheader={loading ? <Skeleton width={'40%'}/> : cardData.category}
       />
       {loading ? 
         <Skeleton sx={{height: 200}}/>
@@ -68,7 +70,7 @@ console.log("card=",cardData);
       <IconButton disabled aria-label="compartilhar">
           <ShareIcon />
       </IconButton>  
-      <Rating style={{padding: 5,marginInline: '20%' , alignContent: 'end', alignItems: 'center', justifyContent: 'flex-end'}} name="score" value="0" disabled readOnly></Rating>            
+      <Rating style={{padding: 5,marginInline: '20%' , alignContent: 'end', alignItems: 'center', justifyContent: 'flex-end'}} name="score" value={0} disabled readOnly></Rating>            
       </>
           :
           <>
@@ -87,4 +89,5 @@ console.log("card=",cardData);
       
     </Card>
   );
+  else return("Card Data Error");
 }
