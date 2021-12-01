@@ -2,54 +2,66 @@ import React, { useState, useEffect} from 'react';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import ShareIcon from '@mui/icons-material/Share';
 import { Rating } from '@material-ui/core';
-import { Skeleton } from '@mui/material';
+import { Button, Skeleton } from '@mui/material';
 import api from '../utils/api'
 import { useParams } from 'react-router';
-
+import './ProductCard.css';
+import AddtoCart from './CartButtonAdd'
 
 
 export default function ProductCard(props) {
 let id = useParams();
 const [loading, isLoading] = useState(true);
 const [cardData , setCardData] = useState([])
+const MAX_WIDTH = 345;
+const MAX_HEIGHT = 500;
 useEffect ( () => {
-  api.get(`${id.id}`)
+  isLoading(true);
+  api.get(`${props.id}`)
   .then((response) => {setCardData(response.data); isLoading(false);})
   .catch((err) => {
     console.error("ops! ocorreu um erro: " + err);
  });
  
-}, []);
-console.log(cardData);
+}, [props.id, id.id]);
+// console.log(cardData);
 if (cardData)
  return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ 
+      maxWidth: MAX_WIDTH,
+       maxHeight: MAX_HEIGHT ,
+        minHeight: '20%',
+         minWidth: '45%',
+        height: MAX_HEIGHT,
+        width: MAX_WIDTH
+         
+         }}>
       <CardHeader
-        title={ loading ? <Skeleton variant="text"/> : cardData.title}
+        title={ loading ? <Skeleton variant="text"/> : <Typography noWrap gutterBottom variant="h6">{cardData.title}</Typography> }
         subheader={loading ? <Skeleton width={'40%'}/> : cardData.category}
       />
       {loading ? 
-        <Skeleton sx={{height: 200}}/>
+        <Skeleton sx={{height: MAX_HEIGHT/2}}/>
         :
       <CardMedia
         style={{
-          objectFit: 'contain'
-        }}
+          objectFit: 'contain',
+          display: 'start'
+        }}       
         component="img"
-        height="194"
+        height={MAX_HEIGHT/2}
         image={cardData.image}
         alt={cardData.title}
       />
     }
       
-      <CardContent>
+      {/* <CardContent>
           {loading ?
           <>
           <Skeleton height={10} style={{marginBottom: 10}}/>
@@ -60,8 +72,8 @@ if (cardData)
           {cardData.description}
         </Typography>
           }
-      </CardContent>
-      <CardActions disableSpacing>
+      </CardContent> */}
+      <CardActions disableSpacing style={{justifyContent: 'space-between',marginTop: 'auto', display: 'inline', flexDirection: 'column'}}>
           {loading ?
           <>
         <IconButton disabled aria-label="adicionar no carrinho">
@@ -70,21 +82,21 @@ if (cardData)
       <IconButton disabled aria-label="compartilhar">
           <ShareIcon />
       </IconButton>  
-      <Rating style={{padding: 5,marginInline: '20%' , alignContent: 'end', alignItems: 'center', justifyContent: 'flex-end'}} name="score" value={0} disabled readOnly></Rating>            
+      <Rating style={{padding: '5px',marginInline: '10%' , alignContent: 'end', alignItems: 'center', justifyContent: 'flex-end'}} name="score" value={0} disabled readOnly></Rating>            
       </>
           :
           <>
-        <IconButton aria-label="adicionar no carrinho">
-          <AddShoppingCartIcon/>
-        </IconButton>
+        <AddtoCart />
+
         <IconButton aria-label="compartilhar">
             <ShareIcon />
         </IconButton>
-        <b style={{padding: '1%',backgroundColor: '#dddbdb', marginLeft: 10, borderStyle: 'dashed'}}>{cardData.price.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</b>
-        <Rating style={{padding: 5,marginInline: '10%' , alignContent: 'end', alignItems: 'center', justifyContent: 'flex-end'}} name="score" value={cardData.rating.rate} disabled readOnly></Rating>
+        
+        <Rating style={{position: 'relative',top: '10px',marginInline: '5%' , alignItems: 'end', justifyContent: 'flex-end'}} name="score" value={cardData.rating.rate} disabled readOnly></Rating>
+        <b style={{ textAlign: 'match-parent',fontSize: '24px',alignContent: 'end', alignItems: 'baseline', padding: '1%',backgroundColor: '#dddbdb', marginLeft: 10, borderStyle: 'dashed'}}>{cardData.price.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</b>  
         </>
           }
-          
+        
           </CardActions>
       
     </Card>

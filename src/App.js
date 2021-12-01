@@ -21,7 +21,7 @@ function App() {
       
       </Router>
 
-    
+    {/* <ProductCard id={3}/> */}
       </body>
       
       <Footer></Footer>
