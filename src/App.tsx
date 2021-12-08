@@ -74,7 +74,7 @@ function App() {
       </Drawer>
       <StyledButton onClick={() => setCartOpen(true)} >
         <Badge badgeContent={getTotalItems(cartItems)} color="error" max={99}>
-          <AddShoppingCart style={{fontSize: '45px'}}/>
+          <AddShoppingCart style={{fontSize: '35px'}}/>
         </Badge>
       </StyledButton>
       </Wrapper>

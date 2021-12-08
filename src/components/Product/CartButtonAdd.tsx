@@ -17,7 +17,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 export default function CustomizedSnackbars(props) {
-  console.log("cartbutton props>",props);
+  // console.log("cartbutton props>",props);
   // const [open, setOpen] = React.useState(false);
 
 
