@@ -12,7 +12,6 @@ import Cart from './components/Cart/Cart'
 import CartItem from './components/Cart/CartItem';
 import  AddShoppingCart  from "@mui/icons-material/AddShoppingCart";
 import { Wrapper, StyledButton } from "./App.styles";
-import { fontSize, padding } from '@material-ui/system';
 import ProductForm from './components/Product/ProductForm';
 
 export type CartItemType = {
