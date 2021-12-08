@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import ShareIcon from '@mui/icons-material/Share';
 import { Rating } from '@material-ui/core';
 import { Button, Skeleton } from '@mui/material';
-import api from '../utils/api'
+import api from '../../utils/api'
 import { useParams } from 'react-router';
 import './ProductCard.css';
 import AddtoCart from './CartButtonAdd'
@@ -21,6 +21,7 @@ const [loading, isLoading] = useState(true);
 const [cardData , setCardData] = useState([])
 const MAX_WIDTH = 345;
 const MAX_HEIGHT = 500;
+// console.log("PRODUCTCARD PROPS>",props);
 useEffect ( () => {
   isLoading(true);
   api.get(`${props.id}`)
@@ -61,18 +62,6 @@ if (cardData)
       />
     }
       
-      {/* <CardContent>
-          {loading ?
-          <>
-          <Skeleton height={10} style={{marginBottom: 10}}/>
-          <Skeleton height={10} style={{marginBottom: 10}}/>
-          </>
-            :
-        <Typography variant="body2" color="text.secondary">
-          {cardData.description}
-        </Typography>
-          }
-      </CardContent> */}
       <CardActions disableSpacing style={{justifyContent: 'space-between',marginTop: 'auto', display: 'inline', flexDirection: 'column'}}>
           {loading ?
           <>
@@ -86,7 +75,7 @@ if (cardData)
       </>
           :
           <>
-        <AddtoCart />
+        <AddtoCart {...props}/>
 
         <IconButton aria-label="compartilhar">
             <ShareIcon />

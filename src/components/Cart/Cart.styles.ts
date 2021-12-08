@@ -1,0 +1,8 @@
+import styled from "styled-components";
+
+export const Wrapper = styled.aside`
+  font-family: Arial, Helvetica, sans-serif;
+  width: 20vw;
+  padding: 50px;
+`;
+ 

@@ -1,13 +1,14 @@
 import { Container, Pagination , Grid, Box } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import ProductCard from './ProductCard';
-import api from '../utils/api';
+import api from '../../utils/api';
 
 
 
 function BuildProductList(props){
     const [productList , setProductList] = useState([]);
     const page = props.pageNumber;
+    // console.log("PRODUCT PAGINATION PROPS>",props);
     useEffect( () => {
         api.get()
         .then((response) => { 
@@ -27,7 +28,7 @@ function BuildProductList(props){
            .map( product => {
                return(
            <Box display="inline-grid" gridTemplateColumns="3" gridAutoRows='400' padding={2} justifyContent="space-around">
-               <ProductCard id={product.id}/>
+               <ProductCard {...props} item={product} id={product.id} />
            </Box>
                )
             
@@ -57,7 +58,7 @@ function ProductPagination(props) {
         justify="center">
             <Grid item xs={4}>
 
-            <BuildProductList pageNumber={page} maxItems={6}/>
+            <BuildProductList {...props} pageNumber={page} maxItems={6}/>
             <Pagination count={5} variant="outlined" shape="rounded" onChange={pageChanged} />
             </Grid>
 
