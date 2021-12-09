@@ -1,0 +1,26 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-tacecommercefrontend-dev-123327-authRole",
+      "UnauthRoleArn": "arn:aws:iam::167880115321:role/amplify-tacecommercefrontend-dev-123327-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::167880115321:role/amplify-tacecommercefrontend-dev-123327-authRole",
+      "Region": "sa-east-1",
+      "DeploymentBucketName": "amplify-tacecommercefrontend-dev-123327-deployment",
+      "UnauthRoleName": "amplify-tacecommercefrontend-dev-123327-unauthRole",
+      "StackName": "amplify-tacecommercefrontend-dev-123327",
+      "StackId": "arn:aws:cloudformation:sa-east-1:167880115321:stack/amplify-tacecommercefrontend-dev-123327/481c0280-583c-11ec-a5f4-028eae469e90",
+      "AmplifyAppId": "dy5fcyouyoz2f"
+    },
+    "categories": {
+      "auth": {
+        "TACEcommerce": {}
+      },
+      "function": {
+        "AdminQueries9c037341": {
+          "deploymentBucketName": "amplify-tacecommercefrontend-dev-123327-deployment",
+          "s3Key": "amplify-builds/AdminQueries9c037341-6f613151383054394871-build.zip"
+        }
+      }
+    }
+  }
+}
