@@ -6,6 +6,8 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import MenuIcon from '@mui/icons-material/Menu';
+import { AmplifyAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react';
+import { red } from '@material-ui/core/colors';
 // import ModalDialog from './ModalDialog';
 
 const useStyles = makeStyles(theme => ({
@@ -17,7 +19,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Navbar = () => {
+const Navbar = ({username}) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
 
@@ -44,8 +46,10 @@ const Navbar = () => {
           E-Commerce Super Seguro
         </Typography>
         <Button color="inherit" onClick={handleOpen}>
-          Login
+          {username.username}
         </Button>
+        <AmplifySignOut buttonText="Logout" />
+    
       </Toolbar>
       {/* <ModalDialog open={open} handleClose={handleClose} /> */}
     </AppBar>

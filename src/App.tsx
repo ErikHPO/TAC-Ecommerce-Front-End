@@ -1,18 +1,27 @@
 import './App.css';
+import React from 'react';
 import { useState } from 'react';
-import { Badge, Drawer, Grid, LinearProgress } from "@material-ui/core";
-import Footer from './components/Footer'
-import Login from './components/Login'
-import ProductCard from './components/Product/ProductCard'
+import { Badge, Drawer } from "@material-ui/core";
+import Footer from './components/Footer';
+import Login from './components/Login';
+import AuthStateApp from './components/LoginCognito'
 import ProductPagination from './components/Product/ProductPagination';
 import {  BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import NotFound from './components/NotFound'
 import Navbar from './components/Navbar';
-import Cart from './components/Cart/Cart'
-import CartItem from './components/Cart/CartItem';
+import Cart from './components/Cart/Cart';
 import  AddShoppingCart  from "@mui/icons-material/AddShoppingCart";
 import { Wrapper, StyledButton } from "./App.styles";
 import ProductForm from './components/Product/ProductForm';
+import Amplify, { Auth } from 'aws-amplify';
+import awsconfig from './aws-exports';
+import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components';
+import {  AmplifySignOut, AmplifyAuthenticator, AmplifySignIn } from '@aws-amplify/ui-react';
+
+
+
+Amplify.configure(awsconfig);
+
 
 export type CartItemType = {
   id: number;
@@ -28,7 +37,18 @@ export type CartItemType = {
 function App() {
   const [cartOpen, setCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState<CartItemType[]>([]);
-  console.log('cartopen:',cartItems);
+  const [authState, setAuthState] = React.useState<AuthState>();
+  const [user, setUser] = React.useState<object | undefined>();
+  React.useEffect(() => {
+    return onAuthUIStateChange((nextAuthState, authData) => {
+        setAuthState(nextAuthState);
+        setUser(authData)
+    });
+}, []);
+
+console.log("USR:",user);
+console.log("AuthState:",authState);
+
   const getTotalItems = (items: CartItemType[]) =>
   items.reduce((acc, item) => acc + item.amount, 0);
   const handleAddToCart = (clickedItem: CartItemType) => {
@@ -59,9 +79,11 @@ function App() {
     );
   };
 
-  return (
+
+
+  return authState === AuthState.SignedIn && user ? (
     <>
-    <Navbar></Navbar>
+    <Navbar username={user} />
     <body>
     <Wrapper>
       <Drawer anchor="right" open={cartOpen} onClose={() => setCartOpen(false)}>
@@ -79,7 +101,7 @@ function App() {
       </Wrapper>
       <Router>
              <Routes>
-        <Route path="/login" element={<Login/>}/>
+        <Route path="/login" element={<AuthStateApp/>}/>
         <Route path="/new" element={<ProductForm/>}/>
         <Route path="/" element={<ProductPagination handleAddToCart={handleAddToCart}/>}/>
         {/* <Route path="/product/:id" element={<ProductCard/> }/> */}
@@ -94,7 +116,11 @@ function App() {
       <Footer></Footer>
     
     </>
-  );
+  )
+  :
+  <AmplifyAuthenticator />
+
+  ;
 }
 
 export default App;
