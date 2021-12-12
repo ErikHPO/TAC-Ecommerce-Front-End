@@ -3,7 +3,6 @@ import React from 'react';
 import { useState } from 'react';
 import { Badge, Drawer } from "@material-ui/core";
 import Footer from './components/Footer';
-import Login from './components/Login';
 import AuthStateApp from './components/LoginCognito'
 import ProductPagination from './components/Product/ProductPagination';
 import {  BrowserRouter as Router, Route, Routes} from "react-router-dom";
@@ -16,7 +15,8 @@ import ProductForm from './components/Product/ProductForm';
 import Amplify, { Auth } from 'aws-amplify';
 import awsconfig from './aws-exports';
 import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components';
-import {  AmplifySignOut, AmplifyAuthenticator, AmplifySignIn } from '@aws-amplify/ui-react';
+import {  AmplifyAuthenticator } from '@aws-amplify/ui-react';
+import SinglePageProduct from './components/Product/SinglePageProduct';
 
 
 
@@ -86,7 +86,7 @@ console.log("AuthState:",authState);
     <Navbar username={user} />
     <body>
     <Wrapper>
-      <Drawer anchor="right" open={cartOpen} onClose={() => setCartOpen(false)}>
+      <Drawer hideBackdrop={false} anchor="right" open={cartOpen} onClose={() => setCartOpen(false)}>
         <Cart
           cartItems={cartItems}
           addToCart={handleAddToCart}
@@ -104,7 +104,7 @@ console.log("AuthState:",authState);
         <Route path="/login" element={<AuthStateApp/>}/>
         <Route path="/new" element={<ProductForm/>}/>
         <Route path="/" element={<ProductPagination handleAddToCart={handleAddToCart}/>}/>
-        {/* <Route path="/product/:id" element={<ProductCard/> }/> */}
+        <Route path="/product/:id" element={<SinglePageProduct /> }/>
         <Route path="*" element={<NotFound/>}/>
             </Routes>
       

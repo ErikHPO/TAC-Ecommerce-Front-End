@@ -11,7 +11,10 @@ import { Rating } from '@material-ui/core';
 import { Button, Skeleton } from '@mui/material';
 import api from '../../utils/api'
 import { useParams } from 'react-router';
+import Stack from '@mui/material/Stack';
 import './ProductCard.css';
+import { Link } from 'react-router-dom'
+import MoreIcon from '@mui/icons-material/More';
 import AddtoCart from './CartButtonAdd'
 
 
@@ -76,6 +79,10 @@ if (cardData)
           :
           <>
         <AddtoCart {...props}/>
+        <Stack>
+        <Button startIcon={<MoreIcon></MoreIcon>} style={{marginTop: '5px'}} color="secondary" variant="outlined"><Link to={`product/${props.id}`}>Ver mais</Link>
+</Button>
+        </Stack>
 
         <IconButton aria-label="compartilhar">
             <ShareIcon />
