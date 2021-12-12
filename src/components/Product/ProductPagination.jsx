@@ -12,9 +12,9 @@ function BuildProductList(props){
     useEffect( () => {
         api.get()
         .then((response) => { 
-            console.log('response>>>',response.data);
+            // console.log('response>>>',response.data);
             setProductList(response.data);
-            console.log('PRODUCT LIST',productList);
+            // console.log('PRODUCT LIST',productList);
         })
         .catch((err) => {
           console.error("ops! ocorreu um erro: " + err);
