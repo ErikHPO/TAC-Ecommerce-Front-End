@@ -27,7 +27,7 @@ function BuildProductList(props){
            productList.filter( product => product.id+page <= props.maxItems*props.pageNumber)
            .map( product => {
                return(
-           <Box display="inline-grid" gridTemplateColumns="3" gridAutoRows='400' padding={2} justifyContent="space-around">
+           <Box display="inline-grid" gridTemplateColumns="3" gridAutoRows='400' padding={2} justifyContent="space-around" key={product.id}>
                <ProductCard {...props} item={product} id={product.id} />
            </Box>
                )

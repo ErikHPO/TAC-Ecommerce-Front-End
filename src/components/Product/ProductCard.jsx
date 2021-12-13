@@ -23,7 +23,7 @@ let id = useParams();
 const [loading, isLoading] = useState(true);
 const [cardData , setCardData] = useState([])
 const MAX_WIDTH = 345;
-const MAX_HEIGHT = 500;
+const MAX_HEIGHT = 550;
 // console.log("PRODUCTCARD PROPS>",props);
 useEffect ( () => {
   isLoading(true);
@@ -37,7 +37,8 @@ useEffect ( () => {
 // console.log(cardData);
 if (cardData)
  return (
-    <Card sx={{ 
+    <Card key={cardData.id}
+     sx={{ 
       maxWidth: MAX_WIDTH,
        maxHeight: MAX_HEIGHT ,
         minHeight: '20%',
@@ -82,6 +83,10 @@ if (cardData)
         <Stack>
         <Button startIcon={<MoreIcon></MoreIcon>} style={{marginTop: '5px'}} color="secondary" variant="outlined"><Link to={`product/${props.id}`}>Ver mais</Link>
 </Button>
+          {(props.isAdmin === true) ?
+          <Button startIcon={<MoreIcon></MoreIcon>} style={{marginTop: '5px'}} color="warning" variant="outlined"><Link to={`edit/${props.id}`}>Editar</Link>
+</Button>
+  : null}
         </Stack>
 
         <IconButton aria-label="compartilhar">

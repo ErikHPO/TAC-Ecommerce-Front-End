@@ -17,7 +17,7 @@ import awsconfig from './aws-exports';
 import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components';
 import {  AmplifyAuthenticator } from '@aws-amplify/ui-react';
 import SinglePageProduct from './components/Product/SinglePageProduct';
-import jwt_decode from "jwt-decode";
+
 
 
 
@@ -111,7 +111,7 @@ console.log("AuthState:",authState);
   return authState === AuthState.SignedIn && user ? (
     <>
       <Router>
-    <Navbar username={user} />
+    <Navbar username={user} isAdmin={userGroup === 'AdminGroup' && user} />
     <body>
     <Wrapper>
       
@@ -130,17 +130,18 @@ console.log("AuthState:",authState);
       </Wrapper>
              <Routes>
         <Route path="/login" element={<AuthStateApp/>}/>
-        <Route path="/" element={<ProductPagination handleAddToCart={handleAddToCart}/>}/>
         <Route path="/product/:id" element={<SinglePageProduct /> }/>
         <Route path="*" element={<NotFound/>}/>
         
       {userGroup === 'AdminGroup' ? 
       <> 
       <Route path="/new" element={<ProductForm/>}/>
+      <Route path="/" element={<ProductPagination isAdmin={true} handleAddToCart={handleAddToCart}/>}/>
       <Route path="/edit/:id" element={<ProductForm/>}/>
       </>
       : 
-      null}
+      <Route path="/" element={<ProductPagination isAdmin={false} handleAddToCart={handleAddToCart}/>}/>
+      }
     
         
             </Routes>
