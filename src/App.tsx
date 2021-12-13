@@ -17,7 +17,7 @@ import awsconfig from './aws-exports';
 import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components';
 import {  AmplifyAuthenticator } from '@aws-amplify/ui-react';
 import SinglePageProduct from './components/Product/SinglePageProduct';
-import { useParams } from 'react-router-dom';
+import jwt_decode from "jwt-decode";
 
 
 
@@ -41,18 +41,40 @@ function App() {
   const [cartOpen, setCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState<CartItemType[]>([]);
   const [authState, setAuthState] = React.useState<AuthState>();
-  const [user, setUser] = React.useState<object | undefined>();
-  const {param} = useParams();
+  const [user, setUser] = React.useState<any>();
+  const [userGroup, setUserGroup] = useState('');
+  // const [token, setToken]= useState<any>();
+  // let decode;
+  
+
   React.useEffect(() => {
     return onAuthUIStateChange((nextAuthState, authData) => {
         setAuthState(nextAuthState);
-        setUser(authData)
-    });
-}, []);
-
-console.log("USR:",user);
+        setUser(authData);
+        // console.log("JWT_DECODE:", user.signInUserSession)
+      });
+    }, []);
+    // React.useEffect( () =>{
+    //   // setToken(String(user?.signInUserSession.accessToken.jwtToken));
+    //   // if(token) decode = jwt_decode(token);
+    //   // console.log(decode);
+    // }, [user])
+    
+    if(authState === 'signedin') Auth.currentAuthenticatedUser()
+    .then(data => {
+      setUserGroup(data.signInUserSession.accessToken.payload['cognito:groups'][0])
+      console.log(data.signInUserSession.accessToken.payload['cognito:groups'][0])
+  });
+    // if (token) decode = jwt_decode(token);
+//########### DEBUG LOG ############################################
+    // user?.filter(item => console.log(item))
+    // console.log('tipeof:', typeof user)
+    // console.log('decode:',decode);
+// console.log("USR:",String(user?.signInUserSession.accessToken.jwtToken));
+// console.log("Token JWT: ", token);
 console.log("AuthState:",authState);
-console.log("param",param);
+// console.log("JWT:"jwt_decode(user.signInUserSession.accessToken.jwtToken))
+//####################################################################
 
   const getTotalItems = (items: CartItemType[]) =>
   items.reduce((acc, item) => acc + item.amount, 0);
@@ -108,11 +130,19 @@ console.log("param",param);
       </Wrapper>
              <Routes>
         <Route path="/login" element={<AuthStateApp/>}/>
-        <Route path="/new" element={<ProductForm/>}/>
-        <Route path="/edit/:id" element={<ProductForm/>}/>
         <Route path="/" element={<ProductPagination handleAddToCart={handleAddToCart}/>}/>
         <Route path="/product/:id" element={<SinglePageProduct /> }/>
         <Route path="*" element={<NotFound/>}/>
+        
+      {userGroup === 'AdminGroup' ? 
+      <> 
+      <Route path="/new" element={<ProductForm/>}/>
+      <Route path="/edit/:id" element={<ProductForm/>}/>
+      </>
+      : 
+      null}
+    
+        
             </Routes>
       
       </body>

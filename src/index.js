@@ -7,7 +7,7 @@ import reportWebVitals from './reportWebVitals';
 ReactDOM.render(
 
   <React.StrictMode>
-    <>
+    
     <head>
     <meta charset="UTF-8"/>
   <meta name="description" content="E-commerce TAC"/>
@@ -16,7 +16,7 @@ ReactDOM.render(
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
       </head>
     <App />
-    </>
+    
   </React.StrictMode>,
   document.getElementById('root')
   
