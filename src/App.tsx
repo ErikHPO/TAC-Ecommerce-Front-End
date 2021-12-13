@@ -17,6 +17,9 @@ import awsconfig from './aws-exports';
 import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components';
 import {  AmplifyAuthenticator } from '@aws-amplify/ui-react';
 import SinglePageProduct from './components/Product/SinglePageProduct';
+import { useParams } from 'react-router-dom';
+
+
 
 
 
@@ -39,6 +42,7 @@ function App() {
   const [cartItems, setCartItems] = useState<CartItemType[]>([]);
   const [authState, setAuthState] = React.useState<AuthState>();
   const [user, setUser] = React.useState<object | undefined>();
+  const {param} = useParams();
   React.useEffect(() => {
     return onAuthUIStateChange((nextAuthState, authData) => {
         setAuthState(nextAuthState);
@@ -48,13 +52,14 @@ function App() {
 
 console.log("USR:",user);
 console.log("AuthState:",authState);
+console.log("param",param);
 
   const getTotalItems = (items: CartItemType[]) =>
   items.reduce((acc, item) => acc + item.amount, 0);
   const handleAddToCart = (clickedItem: CartItemType) => {
     setCartItems((prev) => {
       const isItemInCart = prev.find((item) => item.id === clickedItem.id);
-
+      localStorage.setItem("id","teste");
       if (isItemInCart) {
         return prev.map((item) =>
           item.id === clickedItem.id
@@ -83,9 +88,11 @@ console.log("AuthState:",authState);
 
   return authState === AuthState.SignedIn && user ? (
     <>
+      <Router>
     <Navbar username={user} />
     <body>
     <Wrapper>
+      
       <Drawer hideBackdrop={false} anchor="right" open={cartOpen} onClose={() => setCartOpen(false)}>
         <Cart
           cartItems={cartItems}
@@ -99,19 +106,19 @@ console.log("AuthState:",authState);
         </Badge>
       </StyledButton>
       </Wrapper>
-      <Router>
              <Routes>
         <Route path="/login" element={<AuthStateApp/>}/>
         <Route path="/new" element={<ProductForm/>}/>
+        <Route path="/edit/:id" element={<ProductForm/>}/>
         <Route path="/" element={<ProductPagination handleAddToCart={handleAddToCart}/>}/>
         <Route path="/product/:id" element={<SinglePageProduct /> }/>
         <Route path="*" element={<NotFound/>}/>
             </Routes>
       
+      </body>
       </Router>
 
     {/* <ProductCard id={3}/> */}
-      </body>
       
       <Footer></Footer>
     
